@@ -1,0 +1,74 @@
+import {
+    GET_NEAREST_START,
+    GET_NEAREST_SUCCESS,
+    GET_NEAREST_ERROR,
+    ON_SELECT_CHANGE,
+    ADD_MARKER,
+    REMOVE_MARKERS,
+    TOGGLE_MARKERS,
+} from '../actions/actionTypes';
+
+const initialState = {
+    markers: localStorage['userMarkers'] ? JSON.parse(localStorage['userMarkers']) : [],
+
+    showUserMarkers: true,
+
+    nearest: [],
+
+    error: null,
+
+    loading: false,
+
+    currentLocation: {
+        lat: 46.482525,
+        lng: 30.723309
+    },
+
+    radius: 2000,
+
+    selectValue: 'cafe',
+};
+
+export default function googleMap(state = initialState, action) {
+    switch (action.type) {
+        case GET_NEAREST_START:
+            return {
+                ...state,
+                loading: true,
+            };
+        case GET_NEAREST_SUCCESS:
+            return {
+                ...state,
+                nearest: action.nearest,
+                loading: false,
+            };
+        case GET_NEAREST_ERROR:
+            return {
+                ...state,
+                error: action.error,
+                loading: false,
+            };
+        case ON_SELECT_CHANGE:
+            return {
+                ...state,
+                selectValue: action.selectValue,
+            };
+        case ADD_MARKER:
+            return {
+                ...state,
+                markers: action.markers,
+            };
+        case REMOVE_MARKERS:
+            return {
+                ...state,
+                markers: action.markers,
+            };
+        case TOGGLE_MARKERS:
+            return {
+                ...state,
+                showUserMarkers: action.showUserMarkers,
+            };
+        default:
+            return state
+    }
+}
