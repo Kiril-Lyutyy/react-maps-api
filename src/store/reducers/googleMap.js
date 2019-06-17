@@ -10,23 +10,16 @@ import {
 
 const initialState = {
     markers: localStorage['userMarkers'] ? JSON.parse(localStorage['userMarkers']) : [],
-
     showUserMarkers: true,
-
     nearest: [],
-
     error: null,
-
-    loading: false,
-
+    trigger: false,
     currentLocation: {
         lat: 46.482525,
         lng: 30.723309
     },
-
     radius: 2000,
-
-    selectValue: 'cafe',
+    selectValue: 'accounting',
 };
 
 export default function googleMap(state = initialState, action) {
@@ -34,19 +27,17 @@ export default function googleMap(state = initialState, action) {
         case GET_NEAREST_START:
             return {
                 ...state,
-                loading: true,
+                trigger: action.trigger,
             };
         case GET_NEAREST_SUCCESS:
             return {
                 ...state,
                 nearest: action.nearest,
-                loading: false,
             };
         case GET_NEAREST_ERROR:
             return {
                 ...state,
                 error: action.error,
-                loading: false,
             };
         case ON_SELECT_CHANGE:
             return {

@@ -13,7 +13,7 @@ export function getNearest (props) {
 
     return dispatch => {
 
-        dispatch(getNearestStart());
+        dispatch(getNearestStart(true));
 
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
         const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
@@ -28,7 +28,6 @@ export function getNearest (props) {
             }
         }).then(resp => {
             dispatch(getNearestSuccess(resp.data.results));
-            //console.log('nearest' , this.props.nearest)
         }).catch(err => {
             dispatch(getNearestError(err))
         })
@@ -70,9 +69,7 @@ export function addMarker (markers) {
     }
 }
 
-export function removeMarkers (markers) {
-
-    //console.log('markers', markers)
+export function removeMarkers () {
 
     localStorage.removeItem('userMarkers');
 
@@ -91,18 +88,19 @@ export function toggleMarkers (showUserMarkers) {
     }
 }
 
-export function getNearestStart () {
+export function getNearestStart (trigger) {
 
-    //console.log('start')
+    console.log('Making request...');
 
     return {
-        type: GET_NEAREST_START
+        type: GET_NEAREST_START,
+        trigger: trigger,
     }
 }
 
 export function getNearestSuccess (nearest) {
 
-    //console.log('success')
+    console.log('Success');
 
     return {
         type: GET_NEAREST_SUCCESS,

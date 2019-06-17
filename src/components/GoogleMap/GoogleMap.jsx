@@ -17,11 +17,6 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-const mapStyles = {
-    width: '100%',
-    height: '100%'
-};
-
 const apiKey = 'AIzaSyBe2N0evjzAD0H3-ibBhBDN5APIAi_iBNI';
 
 class GoogleMap extends Component {
@@ -29,6 +24,11 @@ class GoogleMap extends Component {
     constructor (props) {
         super(props);
         this.state = {
+
+            mapStyles: {
+                width: 'calc(100% - 30px)',
+                height: '100%'
+            },
 
             showingInfoWindow: false,
             activeMarker: {},
@@ -51,7 +51,7 @@ class GoogleMap extends Component {
         };
     }
 
-    onMarkerClick = (props, marker, e) => {
+    onMarkerClick = (props, marker) => {
         this.setState({
             selectedPlace: props,
             activeMarker: marker,
@@ -110,37 +110,18 @@ class GoogleMap extends Component {
                                     )}}>Show nearest objects</Button>
                                 </div>
                                 <br/>
-                                {this.props.loading ? 'Loading results...' : ''}
-                                {this.props.nearest.length !== 0 ? <p>Found <b>{this.props.nearest.length}</b> objects</p> : null}
+                                {this.props.trigger ? <p>Found <b>{this.props.nearest.length}</b> objects</p> : null}
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col sm={8}>
-
-                        <Card className={ClassList.google_map__card}>
-                            <Card.Header as="h5" className={ClassList.title}>Custom markers</Card.Header>
-                            <Card.Body>
-                                <Card.Title>Create custom markers</Card.Title>
-                                <Card.Text>
-                                    Left click on a map creates a new custom marker.<br/>
-                                    To save custom markers in a browser session press "Save custom markers" button.<br/>
-                                    To show/hide custom markers use "Toggle visibility" button.<br/>
-                                    To remove all markers from the map use "Remove al" button.
-                                </Card.Text>
-                                <Button className={ClassList.google_map__btn}
-                                        variant="success" onClick={this.saveMarkers}>Save custom markers</Button>
-                                <Button className={ClassList.google_map__btn}
-                                        variant="primary" onClick={() => {this.props.toggleMarkersHandler(this.props.showUserMarkers)}}>Toggle visibility</Button>
-                                <Button variant="danger" onClick={this.props.removeMarkers}>Remove all</Button>
-                            </Card.Body>
-                        </Card>
 
                         <div id="map">
 
                             <Map
                                 google={this.props.google}
                                 zoom={14}
-                                style={mapStyles}
+                                style={this.state.mapStyles}
                                 initialCenter={this.props.currentLocation}
                                 onClick={(t, map, coord) => this.props.saveMarker(t, map, coord, this.props.markers)}
                             >
@@ -178,10 +159,31 @@ class GoogleMap extends Component {
                                         <p>{this.state.selectedPlace.name}</p>
                                     </div>
                                 </InfoWindow>
-
                             </Map>
-
                         </div>
+
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col>
+                        <Card className={ClassList.google_map__card}>
+                            <Card.Header as="h5" className={ClassList.title}>Custom markers</Card.Header>
+                            <Card.Body>
+                                <Card.Title>Create custom markers</Card.Title>
+                                <Card.Text>
+                                    Left click on a map creates a new custom marker.<br/>
+                                    To save custom markers in a browser session press "Save custom markers" button.<br/>
+                                    To show/hide custom markers use "Toggle visibility" button.<br/>
+                                    To remove all markers from the map use "Remove al" button.
+                                </Card.Text>
+                                <Button className={ClassList.google_map__btn}
+                                        variant="success" onClick={this.saveMarkers}>Save custom markers</Button>
+                                <Button className={ClassList.google_map__btn}
+                                        variant="primary" onClick={() => {this.props.toggleMarkersHandler(this.props.showUserMarkers)}}>Toggle visibility</Button>
+                                <Button variant="danger" onClick={this.props.removeMarkers}>Remove all</Button>
+                            </Card.Body>
+                        </Card>
                     </Col>
                 </Row>
             </Container>
@@ -199,6 +201,7 @@ function mapStateToProps(state) {
         radius: state.googleMap.radius,
         selectValue: state.googleMap.selectValue,
         showUserMarkers: state.googleMap.showUserMarkers,
+        trigger: state.googleMap.trigger,
     }
 }
 

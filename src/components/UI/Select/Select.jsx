@@ -6,7 +6,7 @@ const Select = props => {
     const htmlFor = (`${props.label}-${Math.round(Math.random() * 100000000)}`).toLowerCase().replace(/\s/g, '-');
 
     return (
-        <div className={classList.select}>
+        <div className={classList.select__wrapper}>
             <div>
                 <label
                     htmlFor={htmlFor}><b>{props.label}</b></label>
@@ -14,7 +14,8 @@ const Select = props => {
             <div>
                 <select id={htmlFor}
                         value={props.value}
-                        onChange={props.onChange}>
+                        onChange={props.onChange}
+                        className={classList.select}>
                     { props.options.map((option, index) => {
 
                         //console.log(option, index)
