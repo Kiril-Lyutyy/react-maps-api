@@ -1,3 +1,3 @@
 # react-maps-api
-to start dev server use "npm run start".
-to compile prod version to dist folder use "npm run build".
+To start dev server use "npm run start".
+To compile production version to "dist" folder use "npm run build".
